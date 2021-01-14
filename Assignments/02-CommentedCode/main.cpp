@@ -1,8 +1,49 @@
+///////////////////////////////////////////////////////////////////////////////
+//                   
+// Author:           Kyle Gordon
+// Email:            kylekgordon@gmail.com
+// Label:            02-CommentedCode
+// Title:            Commented Code
+// Course:           3013-Algorithms
+// Semester:         Spring 2021
+//
+// Description:
+//       describe program here thoroughly 
+//
+// Usage:
+//       how to use the program if necessary
+//
+// Files:     main.cpp    : driver program
+/////////////////////////////////////////////////////////////////////////////////
+
 #include <iostream>
 
 using namespace std;
 
-int A[100];
+int A[100]; //global Array
+
+/**
+ * Class Name
+ * 
+ * Description:
+ *      Description of your class and what it does
+ * 
+ * Public Methods:
+ *      - A list of 
+ *      - each public method
+ *      - with return types
+ * 
+ * Private Methods:
+ *      - A list of 
+ *      - each private method
+ *      - with return types
+ * 
+ * Usage: 
+ * 
+ *      - examples of how
+ *      - to use your class 
+ *      
+ */
 
 struct Node {
     int x;
@@ -16,6 +57,29 @@ struct Node {
         next = NULL;
     }
 };
+
+/**
+ * Class Name
+ * 
+ * Description:
+ *      Description of your class and what it does
+ * 
+ * Public Methods:
+ *      - A list of 
+ *      - each public method
+ *      - with return types
+ * 
+ * Private Methods:
+ *      - A list of 
+ *      - each private method
+ *      - with return types
+ * 
+ * Usage: 
+ * 
+ *      - examples of how
+ *      - to use your class 
+ *      
+ */
 
 class List {
 private:
