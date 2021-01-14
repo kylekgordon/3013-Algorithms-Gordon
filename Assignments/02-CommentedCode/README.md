@@ -1,5 +1,12 @@
+## 02-CommentedCode
+### Kyle Gordon
+### Description:
 
+Assignment to ensure proper commenting
 
-|   Number  | Folder | Description |
-| :---: | ----------- | ---------------------- |
-|    02   |      02-CommentedCode       |            Assignment to ensure proper commenting            |
+### Files
+
+|   Number   | File            | Description                                        |
+| :---: | --------------- | -------------------------------------------------- |
+|   1   | Main.cpp         | Main file to comment on.      |
+
