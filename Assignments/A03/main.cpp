@@ -27,17 +27,19 @@
 
 using namespace std;
 
-int A[100]; // global Array
+int A[100];                 // global Array
 
 
 // linked list node
 struct Node {
     int x;
-    Node* next;
+    Node* next;             // Link to next node
+    // default constructor
     Node() {
         x = -1;
         next = NULL;
     }
+    // overloaded constructor
     Node(int n) {
         x = n;
         next = NULL;
@@ -52,20 +54,20 @@ struct Node {
  *      This class creates a tree. 
  *
  * Public Methods:
- *      void        Push(int val)
- *      void        Insert(int val)
- *      void        PrintTail()
- *      string      Print()
+ *      - void        Push(int val)
+ *      - void        Insert(int val)
+ *      - void        PrintTail()
+ *      - string      Print()
  *
  * Private Methods:
- *      Node*       Head
- *      Node*       Tail
- *      int         Size
+ *      - Node*       Head
+ *      - Node*       Tail
+ *      - int         Size
  *
  * Usage:
  *
- *      L1.Push(i)
- *      L1.PrintTail()
+ *      - L1.Push(i)
+ *      - L1.PrintTail()
  */
 
 class List {
@@ -113,6 +115,7 @@ public:
     }
 
     string Print() {
+        // copy head as not to destroy the list
         Node* Temp = Head;
         string list;
 
@@ -181,24 +184,30 @@ public:
 };
 
 int main(int argc, char** argv) {
-    List L1;
-    List L2;
+    List L1;                // declare instance of list L1
+    List L2;                // declare instance of list L2
 
+    // standard for loop to loop over 
+    // our list/array and insert
+    // into the list 0 to  24
     for (int i = 0; i < 25; i++) {
         L1.Push(i);
     }
-
+    // standard for loop to loop over 
+    // our list/array and insert
+    // into the list 50 to 99
     for (int i = 50; i < 100; i++) {
         L2.Push(i);
     }
 
     //cout << L1 << endl;
+    // Print the list's Tail
     L1.PrintTail();
     L2.PrintTail();
 
-    List L3 = L1 + L2;
-    cout << L3 << endl;
+    List L3 = L1 + L2;      // declare instance of list L3
+    cout << L3 << endl;     // print the list to screen
 
-    cout << L3[5] << endl;
+    cout << L3[5] << endl;  // Print specific index to screen
     return 0;
 }
