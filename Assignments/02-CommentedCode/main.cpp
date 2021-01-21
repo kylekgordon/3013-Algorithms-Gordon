@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////
-//                   
+// 
 // Author:           Kyle Gordon
 // Email:            kylekgordon@gmail.com
 // Label:            02-CommentedCode
@@ -8,46 +8,32 @@
 // Semester:         Spring 2021
 //
 // Description:
-//       describe program here thoroughly 
+//      This program implements a class that allows a linked list to be used just like 
+//      an array.It overloads the "[]" (square brackets) to simulate accessing seperate
+//      array elements, but really it traverses the list to find the specified node using
+//      an index value. It also overloads the "+" and "-" signs allowing a user to "add"
+//      or "push" items onto the end of the list, as well as "pop" items off the end of our
+//      array.
 //
 // Usage:
-//       how to use the program if necessary
+//      Run the program and it will generate values for L1 and L2 based on the parameters.
 //
-// Files:     main.cpp    : driver program
+// Files:     
+//      main.cpp    : driver program
 /////////////////////////////////////////////////////////////////////////////////
 
 #include <iostream>
+#include <string>
 
 using namespace std;
 
-int A[100]; //global Array
+int A[100]; // global Array
 
-/**
- * Class Name
- * 
- * Description:
- *      Description of your class and what it does
- * 
- * Public Methods:
- *      - A list of 
- *      - each public method
- *      - with return types
- * 
- * Private Methods:
- *      - A list of 
- *      - each private method
- *      - with return types
- * 
- * Usage: 
- * 
- *      - examples of how
- *      - to use your class 
- *      
- */
 
+// linked list node
 struct Node {
     int x;
-    Node *next;
+    Node* next;
     Node() {
         x = -1;
         next = NULL;
@@ -59,32 +45,33 @@ struct Node {
 };
 
 /**
- * Class Name
- * 
+ *
+ * List
+ *
  * Description:
- *      Description of your class and what it does
- * 
+ *      This class creates a tree. 
+ *
  * Public Methods:
- *      - A list of 
- *      - each public method
- *      - with return types
- * 
+ *      void        Push(int val)
+ *      void        Insert(int val)
+ *      void        PrintTail()
+ *      string      Print()
+ *
  * Private Methods:
- *      - A list of 
- *      - each private method
- *      - with return types
- * 
- * Usage: 
- * 
- *      - examples of how
- *      - to use your class 
- *      
+ *      Node*       Head
+ *      Node*       Tail
+ *      int         Size
+ *
+ * Usage:
+ *
+ *      L1.Push(i)
+ *      L1.PrintTail()
  */
 
 class List {
 private:
-    Node *Head;
-    Node *Tail;
+    Node* Head;
+    Node* Tail;
     int Size;
 
 public:
@@ -95,11 +82,12 @@ public:
 
     void Push(int val) {
         // allocate new memory and init node
-        Node *Temp = new Node(val);
+        Node* Temp = new Node(val);
 
         if (!Head && !Tail) {
             Head = Tail = Temp;
-        } else {
+        }
+        else {
             Tail->next = Temp;
             Tail = Temp;
         }
@@ -108,7 +96,7 @@ public:
 
     void Insert(int val) {
         // allocate new memory and init node
-        Node *Temp = new Node(val);
+        Node* Temp = new Node(val);
 
         // figure out where it goes in the list
 
@@ -119,13 +107,13 @@ public:
         }
         Size++;
     }
-
+        // prints the tail
     void PrintTail() {
         cout << Tail->x << endl;
     }
 
     string Print() {
-        Node *Temp = Head;
+        Node* Temp = Head;
         string list;
 
         while (Temp != NULL) {
@@ -139,15 +127,15 @@ public:
     // not implemented
     int Pop() {
         Size--;
-        return 0; //
+        return 0;
     }
 
-    List operator+(const List &Rhs) {
+    List operator+(const List& Rhs) {
         // Create a new list that will contain both when done
         List NewList;
 
         // Get a reference to beginning of local list
-        Node *Temp = Head;
+        Node* Temp = Head;
 
         // Loop through local list and Push values onto new list
         while (Temp != NULL) {
@@ -171,12 +159,13 @@ public:
     // Implementation of [] operator.  This function returns an
     // int value as if the list were an array.
     int operator[](int index) {
-        Node *Temp = Head;
+        Node* Temp = Head;
 
         if (index >= Size) {
             cout << "Index out of bounds, exiting";
             exit(0);
-        } else {
+        }
+        else {
 
             for (int i = 0; i < index; i++) {
                 Temp = Temp->next;
@@ -185,13 +174,13 @@ public:
         }
     }
 
-    friend ostream &operator<<(ostream &os, List L) {
+    friend ostream& operator<<(ostream& os, List L) {
         os << L.Print();
         return os;
     }
 };
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
     List L1;
     List L2;
 
