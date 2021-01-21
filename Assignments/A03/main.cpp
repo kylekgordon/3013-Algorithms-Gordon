@@ -27,10 +27,10 @@
 
 using namespace std;
 
-int A[100]; //global Array
+int A[100]; // global Array
 
 
-//Linked list node
+// linked list node
 struct Node {
     int x;
     Node* next;
@@ -107,7 +107,7 @@ public:
         }
         Size++;
     }
-
+        // prints the tail
     void PrintTail() {
         cout << Tail->x << endl;
     }
@@ -127,7 +127,7 @@ public:
     // not implemented
     int Pop() {
         Size--;
-        return 0; //
+        return 0;
     }
 
     List operator+(const List& Rhs) {
