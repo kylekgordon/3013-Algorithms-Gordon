@@ -2,7 +2,7 @@
 ### Kyle Gordon
 ### Description:
 
-Assignment to ensure proper commenting
+Assignment to ensure proper resizing
 
 ### Files
 
