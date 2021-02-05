@@ -354,9 +354,9 @@ while (!stack.Empty())
 }
 int fcount = count + 1;
 
-if (fcount < size/2)
-{
-    stack.ContainerShrink();
-}
+//if (fcount < size/2)
+//{
+//    stack.ContainerShrink();
+//}
 
-}
+//}
