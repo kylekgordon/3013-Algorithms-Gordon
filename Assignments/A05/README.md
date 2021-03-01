@@ -23,7 +23,7 @@ cout<<count<<endl;
 
 - Count = 523776
   
-- Complexity = O((n^2 - n)/2)
+- Complexity = O((n^2 - n)/2) => O(n^2)
   
 ```cpp
 int count = 0;
@@ -38,9 +38,9 @@ cout<<count<<endl;
 
 -----
 
-- Count = _____________________
+- Count = 536346624
   
-- Complexity = ________________
+- Complexity = O((n^3 - n^2)/2) => O(n^3)
   
 ```cpp
 int count = 0;
@@ -57,9 +57,9 @@ cout<<count<<endl;
 
 -----
 
-- Count = _____________________
+- Count = 2048
   
-- Complexity = ________________
+- Complexity = O(2n)
   
 ```cpp
 int count=0;
@@ -72,9 +72,9 @@ cout<<count<<endl;
 
 -----
 
-- Count = _____________________
+- Count = 2097152
   
-- Complexity = ________________
+- Complexity = O(2n^2)
   
 ```cpp
 int count=0;
@@ -89,9 +89,9 @@ cout<<count<<endl;
 
 -----
 
-- Count = _____________________
+- Count = 524800
   
-- Complexity = ________________
+- Complexity = O(n + (n^2 - n)/2)
   
 ```cpp
 int count=0;
@@ -109,9 +109,9 @@ cout<<count<<endl;
 
 -----
 
-- Count = _____________________
+- Count = 11264
   
-- Complexity = ________________
+- Complexity = O(11n)
   
 ```cpp
 int count = 0;
@@ -151,9 +151,9 @@ found = BinarySearch(A,n);
 
 -----
 
-- Count = _____________________
+- Count = 0
   
-- Complexity = ________________
+- Complexity = O(11) => O(1)
   
 ```cpp
 int count = 0;
