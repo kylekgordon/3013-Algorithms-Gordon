@@ -151,7 +151,7 @@ found = BinarySearch(A,n);
 
 -----
 
-- Count = 0
+- Count = 11
   
 - Complexity = O(11) => O(1)
   
