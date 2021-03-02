@@ -130,9 +130,9 @@ cout<<count<<endl;
 
 -----
 
-- Comparisons = _______________
+- Comparisons = 300
   
-- Complexity = ________________
+- Complexity = O(log n)
   
 ```cpp
 bool found = 0;
