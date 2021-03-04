@@ -59,7 +59,7 @@ cout<<count<<endl;
 
 - Count = 2048
   
-- Complexity = O(2n)
+- Complexity = O(2n) => O(n)
   
 ```cpp
 int count=0;
@@ -111,7 +111,7 @@ cout<<count<<endl;
 
 - Count = 11264
   
-- Complexity = O(11n)
+- Complexity = O(11n) => O(n)
   
 ```cpp
 int count = 0;
