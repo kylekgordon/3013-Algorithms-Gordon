@@ -45,7 +45,7 @@ using namespace std;
  * Returns:
  *      vector<string> - holding all the matches to substring
  */
-vector<string> findWords(vector<string> array, string substring, int pos) {
+vector<string> findWords(vector<string> array, string substring) {
     vector<string> matches; // to hold any matches
     size_t found;           // size_t is an integer position of
                             // found item. -1 if its not found.
@@ -53,7 +53,9 @@ vector<string> findWords(vector<string> array, string substring, int pos) {
     for (int i = 0; i < array.size(); i++) { // loop through array
         found = array[i].find(substring);    // check for substr match
         if (found != string::npos) {         // if found >= 0 (its found then)
-            matches.push_back(array[i]);     // add to matches
+             if(int(found) == 0){				//if word found begins with substring
+		matches.push_back(array[i]);     // add to matches
+		}
         }
     }
 
@@ -111,7 +113,7 @@ int main() {
         // Find any animals in the array that partially match
         // our substr word
         T.Start(); // start it
-        matches = findWords(dictionary, word, 0);
+        matches = findWords(dictionary, word);
         T.End(); // end the current timer
         cout << T.Seconds() << " seconds to read in and print json" << endl;
         cout << T.MilliSeconds() << " milli to read in and print json" << endl;
