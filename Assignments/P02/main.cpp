@@ -26,150 +26,13 @@
 
 #include "getch.hpp"
 #include "termcolor.hpp"
-#include "timer.hpp"
 #include "JsonFacade.hpp"
-#include <time.h>
-#include <chrono> 
+#include "timer.hpp"
 #include <fstream>
 #include <iostream>
 #include <vector>
 
-
 using namespace std;
-
-/**
- * Description:
- *      Originally wrote this to count size of input file so
- *      I could allocate enough memory for an array of strings
- *      but I went with a vector below. But I'm keeping it and
- *      using it anyway!
- * Params:
- *      string file_name - file to get the line count
- * 
- * Returns:
- *      int - line count
- */
-// int CountLines(string file_name) {
-//     ifstream inFile(file_name);
-//     return count(istreambuf_iterator<char>(inFile), istreambuf_iterator<char>(), '\n');
-// }
-
-struct wordNode{
-   string word;           // data in our node (super simple right now)
-   //string definition;
-   wordNode* nextWord;         // pointer to next node
-    wordNode(string w){        // constructor for node
-    word = w;
-    }
-};
-
-/**
-* Class ListStack
-* 
-* Description:
-*      Linked list implementation of a Stack.
-* 
-* Public Methods:
-*      - ListStack()
-*      - int Pop()
-*      - bool Empty()
-*      - void Print()
-*      - void Push(int)
-* 
-* Private Methods:
-*      - None
-*/
-class wordNodes{
-private:
-    wordNode* Head;          // pointer to front of list
-public:
-// constructor
-    wordNodes(){
-    Head = NULL;    // list is empty
-  }
-
-  void Push(string word){
-    wordNode* Temp = new wordNode(word);    // allocate new memory
-
-       // Adding to empty list 
-       if(Head == NULL){
-          Head = Temp;
-        }else{
-      // Adding to non empty list
-         Temp->nextWord = Head;
-         Head = Temp;
-        }
-    }
-
-    //LIFO
-    string Pop(){
-        // get value from Head
-        // delete the first node
-        // adjusting some pointers
-        // return the value
-        if(!Empty()){               // cant remove from empty stack!
-            string Temp = Head->word;   // make a copy of top value
-            wordNode* OldTop = Head;     // pointer to the top 
-            Head = Head->nextWord;        // move Top to next node.
-            delete OldTop;          // delete node pointed to by OldTop
-            return Temp;            // Now you can return popped value
-        }
-        return 0;             // If there was a problem we return
-                                    // a sentinel value. Better solution
-                                    // later.
-    }                               
-
-    // is the stack empty?
-    bool Empty(){
-        return Head==NULL;
-    }
-
-    // Why don't we have a Full method?
-
-     void Print(){
-         wordNode* Current = Head;            // temp pointer to top of stack
-         cout<<"Top->";                  
-         while(Current){                 // while there are still nodes 
-                                         //    in the list
-             cout<<Current->word;        // print the data from node 
-
-             if(Current->nextWord){          // if we were at last node   
-                 cout<<"->";             //    current->next would be NULL!
-             }                         
-
-             Current = Current->nextWord;    // move our pointer down the list
-         }
-         cout<<"->NULL"<<endl;
-     }
-};
-
-/**
- * Description:
- *      Loads a file of strings (words, names, whatever) reading them in
- *      with one word per line. So words must be delimited by newlines '\n'
- * Params:
- *      string file_name - file to get the line count
- * 
- * Returns:
- *      int - line count
- */
-vector<string> LoadAnimals(string file_name) {
-    ifstream fin;                            // file to get animal names
-    int count = 224; // get size of input file
-    vector<string> array(count);             // allocate vector of correct size
-
-    fin.open("animals.txt"); // open file for reading
-
-    // knowing the size of the file lets us treat
-    // it like an array without using .push_back(value)
-    for (int i = 0; i < count; i++) {
-        fin >> array[i];           // read in animals
-        for (auto &c : array[i]) { // c++ 11 style loop
-            c = tolower(c);        // lowercase the animal name
-        }
-    }
-    return array;
-}
 
 /**
  * Description:
@@ -182,7 +45,7 @@ vector<string> LoadAnimals(string file_name) {
  * Returns:
  *      vector<string> - holding all the matches to substring
  */
-vector<string> FindAnimals(vector<string> array, string substring) {
+vector<string> findWords(vector<string> array, string substring, int pos) {
     vector<string> matches; // to hold any matches
     size_t found;           // size_t is an integer position of
                             // found item. -1 if its not found.
@@ -200,87 +63,73 @@ vector<string> FindAnimals(vector<string> array, string substring) {
 int main() {
     char k;                 // holder for character being typed
     string word = "";       // var to concatenate letters to
-    //wordNodes words;
-    //json dict;
-    
-   // ifstream dictionary("dict_w_defs.json");//, ifstream::binary
-
-  //  vector<string> animals; // array of animal names
-   // vector<string> matches; // any matches found in vector of animals
+    vector<string> dictionary; // array of animal names
+    vector<string> matches; // any matches found in vector of animals
 
     ofstream fout("temp.txt");
 
     Timer T;   // create a timer
     T.Start(); // start it
+	JsonFacade J("dict_w_defs.json");   // create instance of json class
+	vector<string> keys = J.getKeys();
+    dictionary = keys;
+	//animals = LoadAnimals("animal_names.txt");
 
-   /* while (!dictionary.eof())
-    {
-        dictionary >> dict;
-        words.Push(dict);
-    }*/
-
-   // animals = LoadAnimals("animals.txt");
-    JsonFacade J("dict_w_defs.json");   // create instance of json class
     T.End(); // end the current timer
 
-    // print out how long it took to load the file
+    // print out how long it took to load the animals file
     cout << T.Seconds() << " seconds to read in and print json" << endl;
     cout << T.MilliSeconds() << " milli to read in and print json" << endl;
 
-    int index = 0;                      // 
-    string key;                         // key variable to access json object
-    vector<string> keys = J.getKeys();
-    cout << keys.size() << endl;
-    index = rand() % keys.size();
-    key = J.getKey(index);
-    cout << key << " = " << J.getValue(key) << endl;
-
-
-
     cout << "Type keys and watch what happens. Type capital Z to quit." << endl;
 
+    // While capital Z is not typed keep looping
+    while ((k = getch()) != 'Z') {
+        
+        // Tests for a backspace and if pressed deletes
+        // last letter from "word".
+        if ((int)k == 127) {
+            if (word.size() > 0) {
+                word = word.substr(0, word.size() - 1);
+            }
+        } else {
+            // Make sure a letter was pressed and only letter
+            if (!isalpha(k)) {
+                cout << "Letters only!" << endl;
+                continue;
+            }
 
-    //// While capital Z is not typed keep looping
-    //while ((k = getch()) != 'Z') {
-
-    //    // Tests for a backspace and if pressed deletes
-    //    // last letter from "word".
-    //    if ((int)k == 127) {
-    //        if (word.size() > 0) {
-    //            word = word.substr(0, word.size() - 1);
-    //        }
-    //    } else {
-    //        // Make sure a letter was pressed and only letter
-    //        if (!isalpha(k)) {
-    //            cout << "Letters only!" << endl;
-    //            continue;
-    //        }
-
-    //        // We know its a letter, lets make sure its lowercase.
-    //        // Any letter with ascii value < 97 is capital so we
-    //        // lower it.
-    //        if ((int)k < 97) {
-    //            k += 32;
-    //        }
-    //        word += k; // append char to word
-    //    }
+            // We know its a letter, lets make sure its lowercase.
+            // Any letter with ascii value < 97 is capital so we
+            // lower it.
+            if ((int)k < 97) {
+                k += 32;
+            }
+            word += k; // append char to word
+        }
 
         // Find any animals in the array that partially match
         // our substr word
-       // matches = FindAnimals(animals, word);
+        T.Start(); // start it
+        matches = findWords(dictionary, word, 0);
+        T.End(); // end the current timer
+        cout << T.Seconds() << " seconds to read in and print json" << endl;
+        cout << T.MilliSeconds() << " milli to read in and print json" << endl;
 
-        //if ((int)k != 32) { // if k is not a space print it
-        //    cout << "Keypressed: " << termcolor::on_yellow << termcolor::blue << k << " = " << (int)k << termcolor::reset << endl;
-        //    cout << "Current Substr: " << termcolor::red << word << termcolor::reset << endl;
-        //    cout << "Animals Found: ";
-        //    cout << termcolor::green;
-        //    // This prints out all found matches
-        //    for (int i = 0; i < matches.size(); i++) {
-        //        cout << matches[i] << " ";
-        //    }
-        //    cout << termcolor::reset << endl
-        //         << endl;
-        //}
-    //}
+        if ((int)k != 32) { // if k is not a space print it
+            cout << "Keypressed: " << termcolor::on_yellow << termcolor::blue << k << " = " << (int)k << termcolor::reset << endl;
+            cout << "Current Substr: " << termcolor::red << word << termcolor::reset << endl;
+            cout << "Words Found: ";
+            cout << termcolor::green;
+            // This prints out all found matches
+            for (int i = 0; i < 10; i++) {
+                cout << matches[i] << " ";
+            }
+            cout << termcolor::reset << endl
+                 << endl;
+        }
+
+    }
+
     return 0;
 }
