@@ -74,7 +74,7 @@ cout<<count<<endl;
 
 - Count = 2097152
   
-- Complexity = O(2n^2)
+- Complexity = O(2n^2) => O(n^2)
   
 ```cpp
 int count=0;
@@ -91,7 +91,7 @@ cout<<count<<endl;
 
 - Count = 524800
   
-- Complexity = O(n + (n^2 - n)/2)
+- Complexity = O(n + (n^2 - n)/2) => O(n^2)
   
 ```cpp
 int count=0;
