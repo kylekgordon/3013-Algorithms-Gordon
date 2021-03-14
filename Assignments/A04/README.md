@@ -8,4 +8,4 @@ Assignment to ensure proper commenting
 
 |   Number   | File            | Description                                        |
 | :---: | --------------- | -------------------------------------------------- |
-|   1   | Main.cpp         | Main file to comment on.      |
+|   1   | main.cpp         | Main file to comment on.      |
