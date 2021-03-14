@@ -8,4 +8,4 @@ Assignment to create Banner
 
 |   Number   | File            | Description                                        |
 | :---: | --------------- | -------------------------------------------------- |
-|   1   | Banner.cpp         | Main file to design banner info.      |
+|   1   | banner.cpp         | Main file to design banner info.      |
