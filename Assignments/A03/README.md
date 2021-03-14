@@ -1,11 +1,11 @@
-## 02-CommentedCode
+## BannerPage
 ### Kyle Gordon
 ### Description:
 
-Assignment to ensure proper commenting
+Assignment to create Banner
 
 ### Files
 
 |   Number   | File            | Description                                        |
 | :---: | --------------- | -------------------------------------------------- |
-|   1   | Main.cpp         | Main file to comment on.      |
+|   1   | Banner.cpp         | Main file to design banner info.      |
