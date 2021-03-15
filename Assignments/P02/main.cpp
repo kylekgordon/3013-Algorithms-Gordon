@@ -28,7 +28,15 @@
 //      main.cpp    : driver program
 /////////////////////////////////////////////////////////////////////////////////
 
+#include "getch.hpp"
+#include "termcolor.hpp"
+#include "JsonFacade.hpp"
+#include "timer.hpp"
+#include <fstream>
+#include <iostream>
+#include <vector>
 
+using namespace std;
 
 struct Words
 {
