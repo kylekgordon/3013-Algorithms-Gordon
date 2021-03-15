@@ -151,7 +151,7 @@ int main() {
             word += k; // append char to word
         }
 
-        // Find any animals in the array that partially match
+        // Find any words in the array that partially match
         // our substr word
         T.Start(); // start it
         matches = findWords(dictionaryW, word);
