@@ -176,10 +176,21 @@ int main() {
             cout << termcolor::green;
 
             // This prints out all found matches
-            for (int i = 0; i < 10; i++) {
+            if(matches.size() > 10)
+           {
+            	for (int i = 0; i < 10 ; i++) 
+		{
+                	cout << matches[i] << " ";
+            	}
+	   }
+	   else
+	   {
+		for (int i = 0; i < matches.size() ; i++) 
+        	{
                 cout << matches[i] << " ";
-            }
-            cout << termcolor::reset << endl
+            	}
+	   }
+           cout << termcolor::reset << endl
                  << endl;
         }
     }
