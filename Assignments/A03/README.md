@@ -8,4 +8,4 @@ Assignment to create Banner
 
 |   Number   | File            | Description                                        |
 | :---: | --------------- | -------------------------------------------------- |
-|   1   | banner.md        | Main file to design banner info.      |
+|   1   | Banner.md        | Main file to design banner info.      |
