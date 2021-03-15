@@ -2,7 +2,7 @@
 ### Kyle Gordon
 ### Description:
 
-Assignment to ensure proper resizing
+Programming assignment to implement proper stack resizing
 
 ### Files
 
