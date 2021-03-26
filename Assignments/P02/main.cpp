@@ -26,6 +26,9 @@
 //
 // Files:     
 //      main.cpp    : driver program
+//		timer.hpp       : used to time operation functionality
+//      JsonFacade.hpp  : helper class for json.hpp class from NLOHMANN
+//      mygetch.hpp     : read in input from keyboard without display
 /////////////////////////////////////////////////////////////////////////////////
 
 #include "getch.hpp"
@@ -38,93 +41,155 @@
 
 using namespace std;
 
-struct Words
-{
-    string Word;            //word in dictionary
-    string Definition;      //definition of word
-    // default constructor
-    Words() 
-    {
-        Word = " ";
-        Definition = " ";
-    }
-    // overloaded constructor
-    Words(string w, string d)
-    {
-        Word = w;
-        Definition = d;
-    }
-};
-
-
 struct wordNode {
-    Words Data;    // Word struct
-    wordNode* Next;     // Link to next node
+    string Word;            //word in dictionary
+    string Definition;      //definition of word (not used)
+    wordNode* Next;     	// Link to next node
+	//constructor			
+    wordNode()
+    {
+    	Word = " ";;
+    	Next = NULL;
+	}
+	
     // constructor
-    wordNode(Words S) {
-        Data = S;
+    wordNode(string S) 
+	{
+        Word = S;
         Next = NULL;
     }
 };
 
+ /**
+ * Class Dictionary
+ * 
+ * Description:
+ *      Used to create the linked list using words from the json dictionary
+ * 
+ * Public Methods:
+ *      - constructors:
+ *          Dictionary            : default constructor
+ *          Dictionary(vector<string>)
+ *                                : overload constructor 
+ *                                with vectors for disctionary
+ * 
+ * Private Methods:
+ *      - A list of 
+ *      - each private method
+ *      - with return types
+ * 
+ * Usage: 
+ * 
+ *      - examples of how
+ *      - to use your class 
+ *      
+ */
+
+class Dictionary
+{
+	private:
+		int size;
+		wordNode * head; //pointer
+    	wordNode * curr;
+	
+	public:
+		Dictionary() //constructor
+		{
+			head = curr = NULL;
+			size = 0;
+		}
+		
+		Dictionary(vector<string> wordsD) //constructor
+		{
+			head = new wordNode();
+			curr = head;
+			
+			for(int i = 0; i <wordsD.size();i++)
+			{
+				curr ->Next= new wordNode(wordsD[i]);
+				curr = curr -> Next;
+			}
+		}
+
 /**
  * Description:
- *      Finds partial matches in an array of strings and returns them.
+ *      Finds partial matches in the linked list of strings and returns them.
  * Params:
- *      vector<string>  array       - array to search
- *      string          substring   - substring to search for in each word
+ *      string substring - substring to search for in each word
  * 
  * Returns:
- *      vector<string> - holding all the matches to substring
+ *      print out of the vector<string> matches- holding all the matches to substring
  */
-vector<string> findWords(vector<string> array, string substring) {
-    vector<string> matches; // to hold any matches
-    size_t found;           // size_t is an integer position of
-                            // found item. -1 if its not found.
-
-    for (int i = 0; i < array.size(); i++) { // loop through array
-        found = array[i].find(substring);    // check for substr match
-        if (found != string::npos) {         // if found >= 0 (its found then)
-        if(int(found) == 0){				//if word found begins with substring
-		matches.push_back(array[i]);     // add to matches
+		
+	void findWord(string substring) 
+	{
+    curr = head->Next;
+	
+	string word;
+	vector<string> matches; //vector<string> matches;
+	int found = 1;
+	int num = 0;
+	
+	//loop through list
+	Timer F;
+	F.Start();
+	while(curr->Next != NULL) 
+	{ 
+		word = curr->Word;
+			//compare current word at index to current searched string
+		if (word.compare(0, substring.size(), substring) == 0)
+		{
+			matches.push_back(word);
 		}
-            
-    	}
-    }
-    return matches;
-}
+		curr = curr->Next;
+	}
+	F.End();
+	
+	if(matches.size() != 0){
+	cout << fixed << matches.size() << " words found in " << setprecision(3) << termcolor::red << F.Seconds()  << termcolor::reset << " seconds" << endl;
+	cout << "Words Found: ";
+    cout << termcolor::green;
+	// This prints out all found matches
+    if(matches.size() > 10)
+    {
+        for (int i = 0; i < 10 ; i++) 
+		{
+            cout << matches[i] << " ";
+        }
+	}
+	else
+	{
+		for (int i = 0; i < matches.size() ; i++) 
+		{
+            cout << matches[i] << " ";
+        }
+	}
+	
+	}else
+	{
+		cout << termcolor::red << "No word found!" << endl;
+	}
+    cout << termcolor::reset << endl
+        << endl;
+	
+	}	
+};
 
 int main() {
-    char k;                 // holder for character being typed
-    string word = "";       // var to concatenate letters to
+    char k;                 	// holder for character being typed
+    string word = "";       	// var to concatenate letters to
 
-    vector<string> dictionaryW; // array of words names
-    vector<string> matches; // any matches found in vector of animals
+    vector<string> dictionaryW, dictionaryD; // array of words and definition
+    vector<string> matches; 	// any matches found in vector of animals
+    JsonFacade J("dict_w_defs.json");
     
-    ofstream fout("temp.txt");
-
+   	dictionaryW = J.getKeys();
+   	//dictionaryD = J.getValue();
+    
     Timer T;   // create a timer
     T.Start(); // start it
-	
-     // create instance of json class
-    JsonFacade J("dict_w_defs.json");
-    Words* WArray = new Words[J.getSize()];
-    //cout << J.getSize();
-    int i = 0;                  // init counter
-    while (i < J.getSize()) {          // while more stuff to read
-        
-        WArray[i].Word = J.getKey(i);   // read the Word into the Words
-        dictionaryW.push_back(WArray[i].Word);                        //    at array location i
-        WArray[i].Definition = J.getValue(J.getKey(i));     // read the Definition into the Words
-                                //    at array location i
-        ++i;                    // increment our counter
-    }
-
+    Dictionary W(dictionaryW);
     T.End(); // end the current timer
-
-    //Test Array
-    //cout << WArray[10].Word << endl;
-    //cout << WArray[10].Definition << endl;
 
     // print out how long it took to load the dictionary file
     cout << T.Seconds() << " seconds to read in and print json" << endl;
@@ -157,41 +222,18 @@ int main() {
                 k += 32;
             }
             word += k; // append char to word
+            
         }
 
-        // Find any words in the array that partially match
-        // our substr word
-        T.Start(); // start it
-        matches = findWords(dictionaryW, word);
-        T.End(); // end the current timer
-        //cout << T.Seconds() << " seconds to read in and print json" << endl;
-        //cout << T.MilliSeconds() << " milli to read in and print json" << endl;
-
-        if ((int)k != 32) { // if k is not a space print it
+     
+        if ((int)k != 32) 
+		{ 	// if k is not a space print it
             cout << "Keypressed: " << termcolor::on_yellow << termcolor::blue << k << " = " << (int)k << termcolor::reset << endl;
             cout << "Current Substr: " << termcolor::red << word << termcolor::reset << endl;
-            cout << fixed << matches.size() << " words found in " << setprecision(3) << termcolor::red << T.Seconds() << 
-		    termcolor::reset << " seconds" << endl;
-            cout << "Words Found: ";
-            cout << termcolor::green;
-
-            // This prints out all found matches
-            if(matches.size() > 10)
-           {
-            	for (int i = 0; i < 10 ; i++) 
-		{
-                	cout << matches[i] << " ";
-            	}
-	   }
-	   else
-	   {
-		for (int i = 0; i < matches.size() ; i++) 
-        	{
-                cout << matches[i] << " ";
-            	}
-	   }
-           cout << termcolor::reset << endl
-                 << endl;
+			
+        	// This finds and puts out all found matches
+			W.findWord(word);
+		
         }
     }
     return 0;
