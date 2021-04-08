@@ -42,7 +42,11 @@
 
 using namespace std;
 
-const int ALPHABET_SIZE = 26; 
+// Converts key current character into index
+// use only 'a' through 'z' and lower case
+#define CHAR_TO_INDEX(c) ((int)c - (int)'a')
+
+const int ALPHABET_SIZE = 26;
 
 
 struct wordNode 
@@ -66,17 +70,24 @@ struct wordNode *getNode(void)
   
     return pNode; 
 } 
-  
-// If not present, inserts key into trie 
-// If the key is prefix of trie node, just 
-// marks leaf node 
-void insert(struct wordNode *root, string substring) 
+
+/**
+* Description:
+*       If not present, inserts key into trie
+*       If the key is prefix of trie node, just marks leaf node 
+* Params:
+*      string word - substring to search for in each word
+*
+* Returns:
+*      trie tree
+*/
+void insert(struct wordNode *root, const string word) 
 { 
     struct wordNode *pCrawl = root; 
   
-    for (int i = 0; i < substring.length(); i++) 
+    for (int i = 0; i < word.length(); i++) 
     { 
-        int index = substring[i] - 'a'; 
+        int index = CHAR_TO_INDEX(word[i]); //int index = word[i] - 'a'; 
         if (!pCrawl->children[index]) 
             pCrawl->children[index] = getNode(); 
   
@@ -87,11 +98,66 @@ void insert(struct wordNode *root, string substring)
     pCrawl->isEndOfWord = true; 
 } 
 
-// function to check if current node is leaf node or not
+/**
+ * Description:
+ *     function to check if current node is leaf node or not
+ * Params:
+ *      root - current node
+ *
+ * Returns:
+ *      true or false (0 or 1)
+ */
+// 
 bool isLeafNode(struct wordNode* root)
 {
-    return root->isEndOfWord != false;
+    for (int i = 0; i < ALPHABET_SIZE; i++)
+        if (root->children[i])
+            return 0;
+    return 1;
+    //return root->isEndOfWord != false;
 }
+
+/**
+ * Description:
+ *      Recursive function to print finding for given
+ *      node
+ * Params:
+ *      string substring - substring to search for in each word
+ *
+ * Returns:
+ *      print out substring
+ */
+void recTrie(struct wordNode* root, string substring)
+{
+    int count = 0;
+    // found a string in Trie with the given prefix
+    if (root->isEndOfWord)
+    {
+        cout << termcolor::green;
+        cout << substring << " ";
+        
+    }
+
+    // All children struct node pointers are NULL
+    if (isLeafNode(root))
+        return;
+
+    for (int i = 0; i < ALPHABET_SIZE; i++)
+    {
+        if (root->children[i])
+        {
+            // append current character to currPrefix string
+            substring.push_back(97 + i);
+
+            // recur over the rest
+            recTrie(root->children[i], substring);
+            // remove last character
+            substring.pop_back();
+        }
+    }
+}
+
+
 
 /**
  * Description:
@@ -102,132 +168,89 @@ bool isLeafNode(struct wordNode* root)
  * Returns:
  *      print out  substring
  */
-bool findWord(struct wordNode *root, string substring, int level) 
+int findWord(wordNode *root, const string substring)
 { 
     struct wordNode *pCrawl = root;
-    
+    int i;
+
+    int n = substring.length();
     // If node is leaf node, it indicates end
     // of string, so a null character is added
     // and string is displayed
-    if (isLeafNode(root))
-    {
-        pCrawl->children[level] = NULL;
-        cout << substring << endl;
-    }
-
-  //loop through list
 	Timer F;
 	F.Start();
-    for (int i = 0; i < substring.length(); i++) 
+    for (i = 0; i < n; i++) 
     { 
-        int index = substring[i] - 'a'; 
+        int index = CHAR_TO_INDEX(substring[i]);  //int index = substring[i] - 'a'; 
         if (!pCrawl->children[index])
         {
-            return false;
+            return 0;
         }
         else
         {
-            for (i = 0; i < ALPHABET_SIZE; i++)
-            {
-         
-            substring[level] = i + 'a';
-            findWord(root->children[i], substring, level + 1);
-            }
+            pCrawl = pCrawl->children[index];
         }
-  
-        pCrawl = pCrawl->children[index];
-        
     }
+   
+    // If prefix is present as a word.
+    bool isWord = (pCrawl->isEndOfWord == true);
+
+    // If prefix is last node of tree (has no
+    // children)
+    bool isLast = isLeafNode(pCrawl);
     
     F.End();
-//	
-//	if(matches.size() != 0){
-//	cout << fixed << matches.size() << " words found in " << setprecision(3) << termcolor::red << F.Seconds()  << termcolor::reset << " seconds" << endl;
-//	cout << "Words Found: ";
-//    cout << termcolor::green;
-//	// This prints out all found matches
-//    if(matches.size() > 10)
-//    {
-//        for (int i = 0; i < 10 ; i++) 
-//		{
-//            cout << matches[i] << " ";
-//        }
-//	}
-//	else
-//	{
-//		for (int i = 0; i < matches.size() ; i++) 
-//		{
-//            cout << matches[i] << " ";
-//        }
-//	}
-//	
-//	}else
-//	{
-//		cout << termcolor::red << "No word found!" << endl;
-//	}
-//    cout << termcolor::reset << endl
-//        << endl;
-//	
-//	}
-//  
-    return (pCrawl != NULL && pCrawl->isEndOfWord); 
+    cout << fixed << "Words found in " << setprecision(3) << termcolor::red << F.Seconds() 
+        << termcolor::reset << " seconds" << endl;
+    cout << "Words Found: ";
+    
+    // If prefix is present as a word, but
+    // there is no subtree below the last
+    // matching node.
+    if (isWord && isLast)
+    {
+
+        cout << substring << " ";
+        return -1;
+    }
+
+    // If there are are nodes below last
+    // matching character.
+    if (!isLast)
+    {
+        string prefix = substring;
+        recTrie(pCrawl, prefix);
+       
+        return 1;
+    }
+   
 }
 
-//void findWord(struct wordNode* root,string substring, int depth){
-//    if (depth == length(substring)){
-//        suffix = empty_string
-//        printWord(suffix, substring, root)
-//    } else {
-//        letter = prefix[depth]
-//        if (node.hasChild(letter)){
-//            findWord(prefix, root.getChild(letter), depth+1)
-//        } else { // no word with the correct prefix
-//            return
-//        }
-//    }
-//}
-//
-//void printWord(suffix, substring, root){
-//    if (root.isCompleteWord){
-//        cout << (substring + suffix) << endl;
-//    }
-//    for each letter c in the alphabet {
-//        if (root.hasChild(c)){
-//            printWord( suffix + c,substring, root.getChild(c))
-//        }
-//    }
-//}
-
-
-
-	
 
 int main() {
     char k;                 	// holder for character being typed
     string word = "";       	// var to concatenate letters to
 
-    vector<string> dictionaryW, dictionaryD, temp; // array of words and definition
-    vector<string> matches; 	// any matches found in vector of animals
+    vector<string> dictionaryW, dictionaryD; // array of words and definition
+    vector<string> matches; 	// any matches found in vector of matches
     
 	JsonFacade J("dict_w_defs.json");
-   	temp = J.getKeys();
+
     dictionaryW = J.getKeys();
-   int j = 0;
-   int i = 0;
 	
     int n = J.getSize();
-	
 
-    cout << temp[120];
-
-system("pause");
+    //cout << dictionaryW[n-1] << endl;
+    //cout << n << endl;
+    system("pause");
     Timer T;   // create a timer
     T.Start(); // start it
     struct wordNode *root = getNode();
      // Construct trie
-    for (int i = 120; i < 400; i++)
-		//cout << dictionaryW[50];
-    	insert(root, dictionaryW[i]);
+    for (int i = 120; i < n-1; i++)
+    {
+        insert(root, dictionaryW[i]);
+    }
     	
     T.End(); // end the current timer
 
@@ -268,15 +291,21 @@ system("pause");
      
         if ((int)k != 32) 
 		{ 	// if k is not a space print it
-            cout << "Keypressed: " << termcolor::on_yellow << termcolor::blue << k << " = " << (int)k << termcolor::reset << endl;
+        
+            cout << termcolor::reset << endl << endl;
+            cout << "Keypressed: " << termcolor::on_yellow << termcolor::blue << k << " = " << (int)k 
+                << termcolor::reset << endl;
             cout << "Current Substr: " << termcolor::red << word << termcolor::reset << endl;
-			
-        	// This finds and puts out all found matches
-            int level = 0;
-            findWord(root, word, level);
-           
             
-            //display(root, word, level);
+        	// This finds and puts out all found matches
+            //int level = 0;
+            int find = findWord(root, word);
+           
+            if (find == -1)
+                cout << "No other strings found with this prefix" << endl;
+
+            else if (find == 0)
+                cout << "No string found with this prefix" << endl;
         }
     }
     return 0;
