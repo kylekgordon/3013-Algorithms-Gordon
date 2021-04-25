@@ -9,4 +9,4 @@ Programming assignment to implement trie tree
 |   Number   | File            | Description                                        |
 | :---: | --------------- | -------------------------------------------------- |
 |   1   | Main.cpp         | Main file to comment on.      |
-|   2   | json  | Data file |
+|   2   | dict_w_defs.json  | dictionary file |
