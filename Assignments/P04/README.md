@@ -10,3 +10,7 @@ Programming assignment to implement trie tree
 | :---: | --------------- | -------------------------------------------------- |
 |   1   | Main.cpp         | Main file to comment on.      |
 |   2   | dict_w_defs.json  | dictionary file |
+|   3   | getch.hpp   | getch file |
+|   4   | json.hpp    | json file |
+|   5   | timer.hpp   | timer file |
+
